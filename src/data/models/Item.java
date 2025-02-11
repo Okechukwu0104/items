@@ -1,57 +1,81 @@
 package data.models;
 
+import data.repositories.Items;
+
 import java.util.Objects;
 import java.util.Random;
+
+import static data.repositories.Items.items;
 
 public class Item {
 
 
-    private int ID ;
+    private String ID ;
     private String name ;
     private String description;
     private TrackingInfo trackingInfo;
-//    private Reciever receiver;
-//    private Sender sender;
 
-    public Item(String name, String description, TrackingInfo trackingInfo) {
+
+    public Item(String name, String description, String weightInGrams) {
+        TrackingInfo trackingInfo = new TrackingInfo();
         this.name = setName(name);
         this.description = description;
-        this.trackingInfo = trackingInfo;
-
+        this.trackingInfo = trackingInfo.addTrackingInfo( name,  description,  weightInGrams);
+        this.ID = generateID();
+        items.add(this);
     }
 
 
-    private void saveItem(int ID, String name, String description, String weightInGrams) {
-        setDescription(description);
-        TrackingInfo trackingInfo = new TrackingInfo(String.valueOf(ID),  name,  description, weightInGrams);
 
+    public Item findItem(String ID){
+        for(Item item : items){
+            if(item.getID().equals(ID)){
+                return item;
+            }
+        }throw new IllegalArgumentException("No Item with ID " + ID+ " found");
     }
 
 
-    public void findItem(String ID){}
+    public String getID() {
+        return ID;
+    }
 
 
 
-    public String generateID() {
-        if(this.ID == 0){
-            Random random = new Random();
-            this.ID  = random.nextInt(100000);
 
-        }return String.valueOf(ID);
+
+
+
+
+
+
+
+
+
+
+
+
+    private String generateID() {
+        if(this.ID != null){
+            throw new IllegalArgumentException("You already have an ID");
+        }
+        Random random = new Random();
+        this.ID  = "ITEM-"+ random.nextInt(100000);
+        return this.ID;
 
     }
 
-    public String setName(String name) {
+    private String setName(String name) {
         this.name = name;
         return name;
     }
 
-    public String setDescription(String description) {
+    private String setDescription(String description) {
         this.description = description;
         return description;
     }
 
-    public String setTrackingInfo(TrackingInfo trackingInfo) {
+    private String setTrackingInfo(TrackingInfo trackingInfo) {
         this.trackingInfo = trackingInfo;
         return trackingInfo.toString();
     }

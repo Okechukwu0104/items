@@ -5,5 +5,5 @@ import data.models.TrackingInfo;
 import java.util.ArrayList;
 
 public class TrackingInfos {
-    ArrayList<TrackingInfo> trackingInfos = new ArrayList<>();
+    public static ArrayList<TrackingInfo> trackingInfos = new ArrayList<>();
 }
