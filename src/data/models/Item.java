@@ -1,8 +1,5 @@
 package data.models;
 
-import data.repositories.Items;
-
-import java.util.Objects;
 import java.util.Random;
 
 import static data.repositories.Items.items;
@@ -16,18 +13,18 @@ public class Item {
     private TrackingInfo trackingInfo;
 
 
-    public Item(String name, String description, String weightInGrams) {
+    public void create (String name, String description, String weightInGrams) {
         TrackingInfo trackingInfo = new TrackingInfo();
         this.name = setName(name);
-        this.description = description;
-        this.trackingInfo = trackingInfo.addTrackingInfo( name,  description,  weightInGrams);
+        this.description = setDescription(description);
+        this.trackingInfo = trackingInfo.create(name,description,weightInGrams);
+
         this.ID = generateID();
         items.add(this);
     }
 
 
-
-    public Item findItem(String ID){
+    public Item find(String ID){
         for(Item item : items){
             if(item.getID().equals(ID)){
                 return item;
@@ -40,6 +37,28 @@ public class Item {
         return ID;
     }
 
+    public void update(String ID, String name, String description, String weightInGrams) {
+        Item foundItem = find(ID);
+        foundItem.resetID(foundItem,ID);
+        foundItem.setName(name);
+        foundItem.setDescription(description);
+        foundItem.editQuantity(weightInGrams);
+
+    }
+
+    public void delete(String ID) {
+        Item foundItem = find(ID);
+        items.remove(foundItem);
+    }
+
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 
 
 
@@ -53,6 +72,17 @@ public class Item {
 
 
 
+
+
+    private void resetID(Item foundItem, String id) {
+        foundItem.ID = id;
+    }
+
+
+    private void editQuantity(String weightInGrams) {
+        this.trackingInfo.setWeightInGrams(weightInGrams);
+        System.out.println(trackingInfo);
+    }
 
 
     private String generateID() {
@@ -65,6 +95,7 @@ public class Item {
 
     }
 
+
     private String setName(String name) {
         this.name = name;
         return name;
@@ -74,16 +105,6 @@ public class Item {
         this.description = description;
         return description;
     }
-
-    private String setTrackingInfo(TrackingInfo trackingInfo) {
-        this.trackingInfo = trackingInfo;
-        return trackingInfo.toString();
-    }
-
-
-
-
-
 
 }
 

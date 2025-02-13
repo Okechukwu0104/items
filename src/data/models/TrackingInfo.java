@@ -9,18 +9,19 @@ public class TrackingInfo {
     private String ID;
     private String name;
     private String description;
-    private String weightInGrams;
+    private static String weightInGrams;
     private String date;
 
 
-    public TrackingInfo addTrackingInfo( String name, String description, String weightInGrams ) {
+    public TrackingInfo create ( String name, String description, String weightInGrams ) {
         this.name = setName(name);
         this.description = setDescription(description);
-        this.weightInGrams = setWeightInGrams(weightInGrams);
+        TrackingInfo.weightInGrams = setWeightInGrams(weightInGrams);
         this.date = new Date().toString();
         this.ID = generateID();
         trackingInfos.add(this);
         return this;
+
     }
 
 
@@ -38,8 +39,21 @@ public class TrackingInfo {
         return ID;
     }
 
-    public void findTrackingInfo(String ID){
 
+    public static TrackingInfo find(String ID){
+        for(TrackingInfo trackingInfo : trackingInfos){
+            if(trackingInfo.getID().equals(ID)){
+                return trackingInfo;
+            }
+        }throw new IllegalArgumentException("No Item with ID " + ID+ " found");
+    }
+
+    public static String getWeightInGrams() {
+        return weightInGrams;
+    }
+    public void delete(String ID){
+        TrackingInfo found = find(ID);
+        trackingInfos.remove(found);
     }
 
 
@@ -59,19 +73,20 @@ public class TrackingInfo {
 
 
 
-
-    public String setDescription(String description) {
+    private String setDescription(String description) {
         this.description = description;
         return description;
     }
 
-    public String setName(String name) {
+    private String setName(String name) {
         this.name = name;
         return name;
     }
-    public String setWeightInGrams(String weightInGrams) {
+    String setWeightInGrams(String weightInGrams) {
         this.weightInGrams = weightInGrams;
         return weightInGrams;
     }
+
+
 }
 
