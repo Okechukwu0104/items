@@ -1,9 +1,13 @@
 name: java CI with Maven
 on:
   push:
-    branches:[ 'main', 'master']
+    branches:
+      - 'main'
+      - 'master'
   pull_request:
-    branches:[ 'main', 'master']
+    branches:
+      - 'main'
+      - 'master'
 
 jobs:
   test:
@@ -11,11 +15,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v4
       - name: Set up JDK 17
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v4
         with:
-          java-version: 1.17
+          java-version: 24
       - name: Maven Package
         run: run -B clean package -Description
       - name: Maven Verify
